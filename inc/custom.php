@@ -71,30 +71,3 @@ function bamboo_shortcode_plugin($plugin_array) {
    $plugin_array['mboy'] = get_bloginfo('template_url').'/admin/admincodes.js';
    return $plugin_array;
 }
-
-
-
-/**
-	* Metabox code
-	*/
-
-add_action( 'admin_init', 'bamboo_register_meta_boxes' );
-
-$prefix = 'bamboo_meta_';
-global $meta_boxes;
-$meta_boxes = array();
-
-//subtitle metabox:
-$meta_boxes[] = array(
-	'id' => 'subtitle',
-  'title' => 'Page Subtitle',
-  'pages' => array( 'page' ),
-  'fields' => array(
-		array(
-			'name' => 'Subtitle',
-      'desc' => 'A short subtitle to appear in the header below the page title',
-      'id' => $prefix . 'subtitle',
-      'type' => 'textarea'
-    ),
-  )
-);
