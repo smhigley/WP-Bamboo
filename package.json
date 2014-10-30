@@ -1,0 +1,21 @@
+{
+  "name": "WP-Bamboo",
+  "version": "1.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "latest",
+    "gulp-ruby-sass": "latest",
+    "gulp-concat": "latest",
+    "gulp-uglify": "latest",
+    "gulp-minify-css": "latest",
+    "gulp-jshint": "latest",
+    "jshint-stylish": "latest",
+    "gulp-rename": "latest",
+    "gulp-size": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Monkee-Boy/WP-Bamboo.git"
+  },
+  "author": "Monkee-Boy"
+}
