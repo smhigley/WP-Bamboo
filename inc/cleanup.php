@@ -4,6 +4,7 @@
  * 1. Clean up wp_head
  * 2. Better URLs
  * 3. Custom nav walker
+ * 4. Custom comments walker
  */
 
 
@@ -123,11 +124,9 @@ function bamboo_clean_urls($content) {
 }
 
 if (!is_multisite() && !is_child_theme()) {
-  if (current_theme_supports('rewrites')) {
-    add_action('generate_rewrite_rules', 'bamboo_add_rewrites');
-  }
+  add_action('generate_rewrite_rules', 'bamboo_add_rewrites');
 
-  if (!is_admin() && current_theme_supports('rewrites')) {
+  if (!is_admin()) {
     $tags = array(
       'bloginfo',
       'stylesheet_directory_uri',
@@ -210,8 +209,7 @@ class Bamboo_Nav_Walker extends Walker_Nav_Menu {
     parent::start_el($item_html, $item, $depth, $args);
 
     if ($item->is_dropdown && ($depth === 0)) {
-      $item_html = str_replace('<a', '<a class="dropdown-toggle" data-toggle="dropdown" data-target="#"', $item_html);
-      $item_html = str_replace('</a>', ' <b class="caret"></b></a>', $item_html);
+      $item_html = str_replace('<a', '<a class="dropdown-toggle" aria-haspopup="true"', $item_html);
     }
     elseif (stristr($item_html, 'li class="divider')) {
       $item_html = preg_replace('/<a[^>]*>.*?<\/a>/iU', '', $item_html);
@@ -219,6 +217,11 @@ class Bamboo_Nav_Walker extends Walker_Nav_Menu {
     elseif (stristr($item_html, 'li class="dropdown-header')) {
       $item_html = preg_replace('/<a[^>]*>(.*)<\/a>/iU', '$1', $item_html);
     }
+
+    // all li's should have role="presentation"
+    // all links should have role="menuitem"
+    $item_html = str_replace('<li', '<li role="presentation"', $item_html);
+    $item_html = str_replace('<a', '<a role="menuitem"', $item_html);
 
     $item_html = apply_filters('bamboo_wp_nav_menu_item', $item_html);
     $output .= $item_html;
@@ -276,3 +279,45 @@ function bamboo_nav_menu_args($args = '') {
   return array_merge($args, $bamboo_nav_menu_args);
 }
 add_filter('wp_nav_menu_args', 'bamboo_nav_menu_args');
+
+/**
+ * 4. Use custom media object for listing comments
+ *
+ */
+class Bamboo_Walker_Comment extends Walker_Comment {
+  function start_lvl(&$output, $depth = 0, $args = array()) {
+    $GLOBALS['comment_depth'] = $depth + 1; ?>
+    <ul <?php comment_class('comment-' . get_comment_ID()); ?>>
+    <?php
+  }
+
+  function end_lvl(&$output, $depth = 0, $args = array()) {
+    $GLOBALS['comment_depth'] = $depth + 1;
+    echo '</ul>';
+  }
+
+  function start_el(&$output, $comment, $depth = 0, $args = array(), $id = 0) {
+    $depth++;
+    $GLOBALS['comment_depth'] = $depth;
+    $GLOBALS['comment'] = $comment;
+
+    if (!empty($args['callback'])) {
+      call_user_func($args['callback'], $comment, $args, $depth);
+      return;
+    }
+
+    extract($args, EXTR_SKIP); ?>
+
+  <li id="comment-<?php comment_ID(); ?>" <?php comment_class('media comment-' . get_comment_ID()); ?>>
+    <?php include(locate_template('comment.php')); ?>
+  <?php
+  }
+
+  function end_el(&$output, $comment, $depth = 0, $args = array()) {
+    if (!empty($args['end-callback'])) {
+      call_user_func($args['end-callback'], $comment, $args, $depth);
+      return;
+    }
+    echo "</div></li>\n";
+  }
+}

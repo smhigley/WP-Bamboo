@@ -7,12 +7,12 @@
 add_action('init', 'custom_post_type');
 function custom_post_type() {
   $labels = array(
-    'name' => __('Post Type', 'roots'),
-    'singular_name' => __('Post Type', 'roots'),
-    'menu_name' => __('Post Type', 'roots'),
-    'all_items' => __('All Post Types', 'roots'),
-    'search_items' => __('Search Post Types', 'roots'),
-    'not_found' => __('No Post Types found', 'roots'),
+    'name' => __('Post Type'),
+    'singular_name' => __('Post Type'),
+    'menu_name' => __('Post Type'),
+    'all_items' => __('All Post Types'),
+    'search_items' => __('Search Post Types'),
+    'not_found' => __('No Post Types found'),
   );
   $args = array(
     'labels' => $labels,

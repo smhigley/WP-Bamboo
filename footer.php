@@ -3,7 +3,7 @@
   * Theme Footer Template
   * Displays the social options from the Theme Options page created in /inc/options.php
   */
-  $options = get_option( 'mb_theme_options' );
+  $options = get_option( 'bamboo_theme_options' );
   $phone = $options['phone'];
   $email = $options['email'];
   $twitter = $options['twitter'];

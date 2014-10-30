@@ -13,7 +13,7 @@
 
   <ul class="news-list">
   <?php while (have_posts()) : the_post(); ?>
-    <li><?php get_template_part('templates/content', get_post_format()); ?></li>
+    <li><?php get_template_part('content', get_post_format()); ?></li>
   <?php endwhile; ?>
   </ul>
 

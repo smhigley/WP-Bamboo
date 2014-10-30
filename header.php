@@ -26,7 +26,7 @@
   <header class="page-header" role="banner">
     <a class="logo" href="<?php echo home_url(); ?>/"><?php bloginfo('name'); ?></a>
     <nav class="nav-main" role="navigation">
-      <?php get_template_part('templates/searchform'); ?>
+      <?php get_template_part('searchform'); ?>
       <?php
         if (has_nav_menu('primary_navigation')) {
           wp_nav_menu(array('theme_location' => 'primary_navigation', 'menu_class' => 'menu' ));

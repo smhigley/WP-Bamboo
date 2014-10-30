@@ -8,8 +8,8 @@ function bamboo_setup() {
 
   // Register wp_nav_menu() menus (http://codex.wordpress.org/Function_Reference/register_nav_menus)
   register_nav_menus(array(
-    'primary_navigation' => __('Primary Navigation', 'roots'),
-    'footer_navigation' => __('Footer Navigation', 'roots'),
+    'primary_navigation' => __('Primary Navigation'),
+    'footer_navigation' => __('Footer Navigation'),
   ));
 
   // Add post thumbnails (http://codex.wordpress.org/Post_Thumbnails)
@@ -39,13 +39,6 @@ add_action('after_setup_theme', 'bamboo_setup');
 // Backwards compatibility for older than PHP 5.3.0
 if (!defined('__DIR__')) { define('__DIR__', dirname(__FILE__)); }
 
-
-/**
- * Enable theme features
- */
-add_theme_support('rewrites');              // Enable URL rewrites
-add_theme_support('h5bp-htaccess');         // Enable HTML5 Boilerplate's .htaccess
-
 /**
  * Customize excerpt
  */
@@ -61,7 +54,7 @@ function bamboo_excerpt_more($more) {
 add_filter('excerpt_more', 'bamboo_excerpt_more');
 
 /**
- * .main classes
+ * main classes to use on body/top-level container, etc
  */
 function bamboo_main_class() {
   //get top parent template to check attribute pages
@@ -72,18 +65,6 @@ function bamboo_main_class() {
     $class = "home";
   } elseif ( is_home() || get_post_type() == 'post' || is_search() ) {
     $class = "blog";
-  } elseif(is_page_template('page-resources.php') || get_post_type() == 'resource' || get_post_type() == 'press') {
-    $class="resource";
-  } elseif( get_page_template_slug($id) == 'page-products.php' ) {
-    $class = "products";
-  } elseif( get_page_template_slug($id) == 'page-solutions.php' ) {
-    $class = "solutions";
-  } elseif( is_page_template('page-about.php') || is_page_template('page-newsroom.php') ) {
-    $class = "about";
-  } elseif( is_page_template('page-careers.php') ) {
-    $class = "about careers";
-  } elseif( is_page_template('page-customers.php') || is_page_template('page-partners.php') ) {
-    $class = "customers-partners";
   } elseif( !is_page_template() ) {
     $class = "subpage";
   } else {
@@ -147,8 +128,8 @@ add_action('wp_enqueue_scripts', 'bamboo_scripts', 100);
  * Add Google Analytics, set in Settings -> General
  */
 function bamboo_google_analytics() {
-  $options = get_option( 'mb_options');
-  $google_analytics_id = $options['mb_google_analytics_id']
+  $options = get_option( 'bamboo_options');
+  $google_analytics_id = $options['bamboo_google_analytics_id']
   ?>
 <script>
   var _gaq=[['_setAccount','<?php echo $google_analytics_id; ?>'],['_trackPageview']];

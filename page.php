@@ -4,7 +4,7 @@
 ?>
 
 <div class="row content">
-	<?php get_template_part('templates/content', 'page'); ?>
+	<?php get_template_part('content', 'page'); ?>
 </div>
 
 <?php

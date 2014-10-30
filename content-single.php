@@ -16,7 +16,7 @@
     </div>
 
     <footer>
-      <?php comments_template('/templates/comments.php'); ?>
+      <?php comments_template('/comments.php'); ?>
     </footer>
   </article>
 
