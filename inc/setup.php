@@ -125,11 +125,12 @@ function bamboo_scripts() {
 add_action('wp_enqueue_scripts', 'bamboo_scripts', 100);
 
 /**
- * Add Google Analytics, set in Settings -> General
+ * Add Google Analytics, set in Theme Options
  */
 function bamboo_google_analytics() {
-  $options = get_option( 'bamboo_options');
-  $google_analytics_id = $options['bamboo_google_analytics_id']
+  $options = get_option( 'bamboo_theme_options');
+  $google_analytics_id = $options['google_analytics'];
+  if ($google_analytics_id !== '') {
   ?>
 <script>
   var _gaq=[['_setAccount','<?php echo $google_analytics_id; ?>'],['_trackPageview']];
@@ -137,10 +138,10 @@ function bamboo_google_analytics() {
     g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
     s.parentNode.insertBefore(g,s)}(document,'script'));
 </script>
-<?php }
-if ($google_analytics_id != '') {
-  add_action('wp_footer', 'bamboo_google_analytics', 20);
+<?php
+  }
 }
+add_action('wp_footer', 'bamboo_google_analytics', 20);
 
 /**
  * Search both posts and pages with default wordpress search
