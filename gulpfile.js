@@ -2,32 +2,38 @@ var gulp = require('gulp'),
     sass = require('gulp-ruby-sass'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
-    minifyCSS = require('gulp-minify-css'),
+    cssnano = require('gulp-cssnano'),
     jshint = require('gulp-jshint'),
     rename = require('gulp-rename'),
     size = require('gulp-size'),
+    sourcemaps = require('gulp-sourcemaps'),
     pkg = require('./package.json');
 
 var paths = {
-  styles: './scss/style.scss',
+  styles: ['./scss/style.scss'],
   scripts: ['./js/main.js']
 };
 
 gulp.task('styles', ['components'], function () {
-  gulp.src(paths.styles)
-    .pipe(sass({ style: 'expanded' })) // Add source maps after figuring out minify issue
+
+  return sass(paths.styles, { sourcemap: false })
+    .on('error', function (err) {
+      console.error('Error', err.message);
+    })
     .pipe(rename('app.css'))
     .pipe(gulp.dest('./css/'))
     .pipe(rename('app.min.css'))
-    .pipe(minifyCSS())
+    .pipe(sourcemaps.init())
+    .pipe(cssnano())
+    .pipe(sourcemaps.write('.'))
     .pipe(size())
     .pipe(gulp.dest('./css/'));
 });
 
 gulp.task('components', function() {
-  return gulp.src(['./bower_components/normalize.css/normalize.css'])
+  return gulp.src(['./components/normalize.css/normalize.css'])
   .pipe(rename('_normalize.scss'))
-  .pipe(gulp.dest('./bower_components/normalize.css/'));
+  .pipe(gulp.dest('./components/normalize.css/'));
 });
 
 gulp.task('scripts', ['lint'], function() {
@@ -48,7 +54,7 @@ gulp.task('lint', function () {
 
 // Rerun the task when a file changes
 gulp.task('watch', function() {
-  gulp.watch('./js/*.js', ['scripts']);
+  gulp.watch(scripts, ['scripts']);
   gulp.watch('./scss/*.scss', ['styles']);
 });
 
