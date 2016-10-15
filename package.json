@@ -4,15 +4,15 @@
   "dependencies": {},
   "devDependencies": {
     "gulp": "latest",
+    "gulp-clean-css": "latest",
     "gulp-concat": "latest",
-    "gulp-cssnano": "latest",
-    "gulp-jshint": "^2.0.0",
+    "gulp-jshint": "latest",
     "gulp-rename": "latest",
     "gulp-ruby-sass": "latest",
     "gulp-size": "latest",
     "gulp-sourcemaps": "latest",
     "gulp-uglify": "latest",
-    "jshint": "^2.9.1",
+    "jshint": "latest",
     "jshint-stylish": "latest"
   },
   "repository": {

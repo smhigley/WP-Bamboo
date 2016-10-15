@@ -2,7 +2,7 @@ var gulp = require('gulp'),
     sass = require('gulp-ruby-sass'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
-    cssnano = require('gulp-cssnano'),
+    cleanCSS = require('gulp-clean-css'),
     jshint = require('gulp-jshint'),
     rename = require('gulp-rename'),
     size = require('gulp-size'),
@@ -15,19 +15,16 @@ var paths = {
 };
 
 gulp.task('styles', ['components'], function () {
-
   return sass(paths.styles, { sourcemap: false })
-    .on('error', function (err) {
-      console.error('Error', err.message);
-    })
-    .pipe(rename('app.css'))
-    .pipe(gulp.dest('./css/'))
-    .pipe(rename('app.min.css'))
-    .pipe(sourcemaps.init())
-    .pipe(cssnano())
-    .pipe(sourcemaps.write('.'))
-    .pipe(size())
-    .pipe(gulp.dest('./css/'));
+  .on('error', function (err) {
+    console.error('Error', err.message);
+  })
+  .pipe(rename('app.css'))
+  .pipe(gulp.dest('css/'))
+  .pipe(rename('app.min.css'))
+  .pipe(cleanCSS())
+  .pipe(sourcemaps.write())
+  .pipe(gulp.dest('css/'));
 });
 
 gulp.task('components', function() {
@@ -54,7 +51,7 @@ gulp.task('lint', function () {
 
 // Rerun the task when a file changes
 gulp.task('watch', function() {
-  gulp.watch(scripts, ['scripts']);
+  gulp.watch(['./js/main.js'], ['scripts']);
   gulp.watch('./scss/*.scss', ['styles']);
 });
 
